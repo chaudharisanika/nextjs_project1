@@ -1,4 +1,4 @@
-// import { CartContext } from "@/utils/ContextReducer";
+import { CartContext } from "@/utils/ContextReducer";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 const Navbar = () => {
     const [mounted, setMounted] = useState(false);
-    // const { state } = useContext(CartContext);
+    const { state } = useContext(CartContext);
     const { theme, setTheme } = useTheme();
     useEffect(() => {
       setMounted(true);
@@ -44,7 +44,7 @@ const Navbar = () => {
               />
             </svg>
             <span className="inline-flex items-center bg-red-50 py-1 px-2 rounded-full text-xs font-medium text-red-600 ring-1 shadow-[0_0_15px_1px_rgba(220,38,38)]  ring-inset ring-red-600/10">
-              0
+              {state.length}
             </span>
           </Link>
           {localStorage.getItem("token") ? (

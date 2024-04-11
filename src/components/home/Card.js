@@ -1,9 +1,11 @@
 import Image from "next/image";
+import { CartContext } from "@/utils/ContextReducer";
 import Link from "next/link";
 import React, { useContext, useState ,useEffect} from "react";
 
 function Card(props) {
   const data = props.foodData;
+  const { state, dispatch } = useContext(CartContext);
   const priceOptions = Object.keys(data.price);
   const [size, setSize] = useState(priceOptions[0]); // Initialize size state 
   const [qty, setQty] = useState(1);
@@ -16,13 +18,42 @@ function Card(props) {
   const handleSize = (e) => {
     setSize(e.target.value);
   };
+
+  const handleAddToCart = async () => {
+    const updateItem = await state.find(
+      (item) => item.tempId === data["_id"] + size
+    );
+    if (!updateItem) {
+      dispatch({
+        type: "ADD",
+        id: data["_id"],
+        tempId: data["_id"] + size,
+        name: data.name,
+        price: finalPrice,
+        qty: qty,
+        priceOption: size,
+        img: data.img,
+      });
+    }
+    if (updateItem) {
+      dispatch({
+        type: "UPDATE",
+        tempId: data["_id"] + size,
+        price: finalPrice,
+        qty: qty,
+      });
+    }
+
+    // console.log(state);
+    
+  };
   
   let finalPrice = qty * parseInt(data.price[size]);
 
   return (
     <div className="box">
       <div className="w-80 rounded-lg bg-white overflow-hidden dark:bg-black border-gradient">
-        {/* <Link href={{ pathname: "/Item/[item]" }} as={`Item/${data["_id"]}`}> */}
+        <Link href={{ pathname: "/Item/[item]" }} as={`Item/${data["_id"]}`}>
           <div className="relative w-full h-80">
             <Image src={data.img} layout="fill" objectFit="cover" alt="pizza" />
           </div>
@@ -32,7 +63,7 @@ function Card(props) {
               {data.description}
             </p>
           </div>
-        {/* </Link> */}
+        </Link>
         <div className="flex px-4 justify-between">
           <select
             className=" h-100  p-1 text-black hover:font-bold font-semibold cursor-pointer dark:text-gray-300  border border-black dark:border-gray-400 rounded"
@@ -61,7 +92,7 @@ function Card(props) {
         </div>
         <div className="flex p-4 font-bold  justify-between">
           <button
-
+            onClick={handleAddToCart}
             className="border dark:border-gray-400 border-gray-900 rounded p-2 hover:bg-gradient-to-r from-indigo-700 via-violet-700 to-orange-700  hover:text-gray-100 "
           >
             Add to cart
