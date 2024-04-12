@@ -11,6 +11,8 @@ function Cart() {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
   const [fail, setFail] = useState(false);
+
+
   const handleCheckOut = async () => {
     let userEmail = localStorage.getItem("userEmail");
     console.log(localStorage.getItem("userEmail"));
@@ -63,7 +65,7 @@ function Cart() {
             </div>
             <div className="flex flex-row justify-between">
               <div>
-                <p class="font-bold">Wohooo !</p>
+                <p class="font-bold">yepii!</p>
                 <p class="text-sm">Your Order has been accepted 😋</p>
               </div>
               <button

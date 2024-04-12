@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 
 const Navbar = () => {
+  //for local storage error
     const [mounted, setMounted] = useState(false);
     const { state } = useContext(CartContext);
     const { theme, setTheme } = useTheme();
